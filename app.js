@@ -97,15 +97,93 @@ function buildToday(){
 }
 buildToday();
 
+
 const mapObj=L.map('mapCanvas').setView([29.4,105.2],6);window.mapObj=mapObj;
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(mapObj);
-const coords=[];
-itinerary.forEach((d,i)=>{
- const marker=L.marker([d.lat,d.lon]).addTo(mapObj).bindPopup(`<strong>${d.date}</strong><br>${d.title}<br>Nuit : ${d.night}`);
- coords.push([d.lat,d.lon]);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19, attribution:'© OpenStreetMap'
+}).addTo(mapObj);
+
+const visitIcon=L.divIcon({
+  className:'custom-marker',
+  html:'<div class="marker visit">★</div>',
+  iconSize:[34,34],iconAnchor:[17,17],popupAnchor:[0,-18]
 });
-L.polyline(coords,{color:'#9d2b22',weight:4,opacity:.8}).addTo(mapObj);
-mapObj.fitBounds(coords,{padding:[30,30]});
+const hotelIcon=L.divIcon({
+  className:'custom-marker',
+  html:'<div class="marker hotel">🛏</div>',
+  iconSize:[34,34],iconAnchor:[17,17],popupAnchor:[0,-18]
+});
+
+const visitSites=[
+{name:'Chengdu',lat:30.5728,lon:104.0668,detail:'Ville, pandas, maisons de thé et opéra du Sichuan'},
+{name:'Mont Emei',lat:29.5229,lon:103.3321,detail:'Sommet d’Or, temples et randonnée'},
+{name:'Grand Bouddha de Leshan',lat:29.5449,lon:103.7739,detail:'Grand Bouddha et promenade sur le site'},
+{name:'Parc national de Jiuzhaigou',lat:33.2600,lon:103.9186,detail:'Lacs turquoise, cascades et passerelles'},
+{name:'Huanglong',lat:32.7472,lon:103.8337,detail:'Bassins turquoise et randonnée en altitude'},
+{name:'Mont Qingcheng',lat:30.9000,lon:103.5650,detail:'Montagne taoïste et sentiers forestiers'},
+{name:'Dujiangyan',lat:31.0050,lon:103.6194,detail:'Système d’irrigation historique'},
+{name:'Chongqing',lat:29.5630,lon:106.5516,detail:'Hongyadong, Jiefangbei et téléphérique du Yangtsé'},
+{name:'Chutes de Huangguoshu',lat:25.9926,lon:105.6671,detail:'Grand ensemble de cascades'},
+{name:'Kaili',lat:26.5835,lon:107.9785,detail:'Culture Miao et Dong, marché et artisanat'},
+{name:'Mont Fanjing',lat:27.9150,lon:108.6990,detail:'Sommet sacré et randonnée'},
+{name:'Guiyang / Qingyan',lat:26.6470,lon:106.6302,detail:'Vieille ville de Qingyan et découverte de Guiyang'}
+];
+
+const hotelStops=[
+{city:'Chengdu',lat:30.5850,lon:104.0900},
+{city:'Emeishan',lat:29.6012,lon:103.4845},
+{city:'Jiuzhaigou',lat:33.2450,lon:103.9000},
+{city:'Dujiangyan',lat:31.0200,lon:103.6350},
+{city:'Chongqing',lat:29.5800,lon:106.5700},
+{city:'Anshun',lat:26.2456,lon:105.9322},
+{city:'Kaili',lat:26.6000,lon:107.9950},
+{city:'Jiangkou',lat:27.6997,lon:108.8399},
+{city:'Guiyang',lat:26.6650,lon:106.6500}
+];
+
+const hotelCities=[...new Set(itinerary.map(x=>x.night).filter(x=>x!=='—'))];
+const hotelIndexByCity=Object.fromEntries(hotelCities.map((c,i)=>[c,i]));
+
+visitSites.forEach(s=>{
+ L.marker([s.lat,s.lon],{icon:visitIcon}).addTo(mapObj)
+  .bindPopup(`<strong>Site à visiter</strong><br><b>${s.name}</b><br>${s.detail}`);
+});
+
+const hotelMarkers=[];
+hotelStops.forEach(s=>{
+ const idx=hotelIndexByCity[s.city];
+ const saved=idx!==undefined?(localStorage.getItem(hotelKey(idx))||''):'';
+ const marker=L.marker([s.lat,s.lon],{icon:hotelIcon}).addTo(mapObj)
+  .bindPopup(`<strong>Hébergement</strong><br><b>${s.city}</b><br>${saved||'Hébergement à confirmer'}`);
+ marker.hotelCity=s.city;hotelMarkers.push(marker);
+});
+
+const routeCoords=itinerary.map(d=>[d.lat,d.lon]);
+L.polyline(routeCoords,{color:'#9d2b22',weight:4,opacity:.75,dashArray:'8,6'}).addTo(mapObj);
+mapObj.fitBounds(routeCoords,{padding:[30,30]});
+
+const legend=L.control({position:'bottomright'});
+legend.onAdd=function(){
+ const div=L.DomUtil.create('div','map-legend');
+ div.innerHTML='<div><span class="legend-dot visit-dot">★</span> Site à visiter</div>'+
+ '<div><span class="legend-dot hotel-dot">🛏</span> Hébergement</div>'+
+ '<div><span class="legend-line"></span> Itinéraire</div>';
+ return div;
+};
+legend.addTo(mapObj);
+
+function refreshHotelPopups(){
+ hotelMarkers.forEach(marker=>{
+  const idx=hotelIndexByCity[marker.hotelCity];
+  const saved=idx!==undefined?(localStorage.getItem(hotelKey(idx))||''):'';
+  marker.setPopupContent(`<strong>Hébergement</strong><br><b>${marker.hotelCity}</b><br>${saved||'Hébergement à confirmer'}`);
+ });
+}
+$$('.tabs button').forEach(btn=>{
+ btn.addEventListener('click',()=>{
+  if(btn.dataset.target==='map')setTimeout(()=>{mapObj.invalidateSize();refreshHotelPopups()},120);
+ });
+});
 
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('#installBtn').classList.remove('hidden')});

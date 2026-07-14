@@ -15,3 +15,11 @@ textarea,input[type=text],input[type=time]{width:100%;border:1px solid var(--lin
 .check{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.check input{width:20px;height:20px}#mapCanvas{height:65vh;min-height:460px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
 @media(min-width:760px){.grid.two{grid-template-columns:1fr 1fr}.travel-row{grid-template-columns:1.4fr .8fr .8fr}.hotel-row{grid-template-columns:1fr 1.4fr}.topbar h1{font-size:1.25rem}}
 @media print{.tabs,.topbar button,.actions{display:none!important}.panel{display:block!important}#mapCanvas{height:500px}body{background:#fff}}
+
+.custom-marker{background:transparent;border:0}
+.marker{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;border:3px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.28)}
+.marker.visit{background:#9d2b22;font-size:18px}.marker.hotel{background:#235d8f;font-size:17px}
+.map-legend{background:#fff;padding:10px 12px;border-radius:12px;border:1px solid var(--line);box-shadow:0 4px 15px rgba(0,0,0,.15);font-size:.88rem;line-height:1.8}
+.legend-dot{display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;color:#fff;margin-right:7px;font-weight:900}
+.visit-dot{background:#9d2b22}.hotel-dot{background:#235d8f}
+.legend-line{display:inline-block;width:26px;border-top:4px dashed #9d2b22;margin-right:7px;vertical-align:middle}
