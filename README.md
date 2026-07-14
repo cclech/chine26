@@ -1,9 +1,7 @@
-# Road Book Chine 2026
+# Notre Voyage en Chine – Été 2026
 
-Site statique prêt pour GitHub Pages.
+Déposez tous les fichiers à la racine du dépôt GitHub `chine26`.
 
-## Publication
-Déposer tous les fichiers à la racine du dépôt, puis activer GitHub Pages sur la branche `main` et le dossier `/ (root)`.
-
-## Notes
-Les notes sont enregistrées dans le navigateur de l'appareil. Utiliser régulièrement le bouton **Exporter**.
+Les images emblématiques sont chargées depuis Wikipédia lorsqu'une connexion Internet est disponible.
+Les notes et hôtels saisis sont conservés dans le navigateur. Utilisez régulièrement **Exporter**.
+Pour partager les photos avec vos proches, créez un album Google Photos partagé et enregistrez son lien dans la page Album.
