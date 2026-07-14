@@ -1,0 +1,9 @@
+{
+  "name": "Road Book Chine 2026",
+  "short_name": "Chine 2026",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f1e8",
+  "theme_color": "#9d2b22",
+  "icons": []
+}

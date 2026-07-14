@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#9d2b22">
+  <title>Road Book Chine 2026</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <h1>🇨🇳 Road Book Chine 2026</h1>
+    <p>30 juillet → 18 août</p>
+  </div>
+  <button id="installBtn" class="ghost hidden">Installer</button>
+</header>
+
+<nav class="tabs">
+  <button data-target="home" class="active">Accueil</button>
+  <button data-target="map">Carte</button>
+  <button data-target="days">Jours</button>
+  <button data-target="travel">Trains</button>
+  <button data-target="hotels">Hôtels</button>
+  <button data-target="notes">Notes</button>
+  <button data-target="checklist">Checklist</button>
+</nav>
+
+<main>
+<section id="home" class="panel active">
+  <div class="hero">
+    <p class="eyebrow">Circuit Sichuan & Guizhou</p>
+    <h2>Nature, culture et randonnées</h2>
+    <p>Chengdu · Emeishan · Leshan · Jiuzhaigou · Huanglong · Dujiangyan · Chongqing · Anshun · Kaili · Mont Fanjing · Guiyang</p>
+  </div>
+  <div class="grid two">
+    <article class="card">
+      <h3>Prochaine étape</h3>
+      <div id="todayCard"></div>
+    </article>
+    <article class="card">
+      <h3>Principe du voyage</h3>
+      <p>Arriver la veille, dormir près du site, commencer tôt et voyager plutôt en fin de journée.</p>
+    </article>
+  </div>
+  <article class="card">
+    <h3>À retenir</h3>
+    <ul>
+      <li>Huanglong : altitude élevée, marcher doucement.</li>
+      <li>Mont Fanjing : réserver le créneau à l’avance.</li>
+      <li>Exporter régulièrement les notes pour les sauvegarder.</li>
+    </ul>
+  </article>
+</section>
+
+<section id="map" class="panel">
+  <h2>Carte interactive</h2>
+  <div id="mapCanvas"></div>
+</section>
+
+<section id="days" class="panel">
+  <h2>Itinéraire jour par jour</h2>
+  <div id="daysList"></div>
+</section>
+
+<section id="travel" class="panel">
+  <h2>Trains et transferts</h2>
+  <div class="card">
+    <p>Complétez les horaires au fur et à mesure de vos réservations.</p>
+    <div id="travelList"></div>
+  </div>
+</section>
+
+<section id="hotels" class="panel">
+  <h2>Hôtels</h2>
+  <div class="card">
+    <p>Enregistrez ici le nom, l’adresse chinoise, le téléphone et le numéro de réservation.</p>
+    <div id="hotelList"></div>
+  </div>
+</section>
+
+<section id="notes" class="panel">
+  <h2>Notes générales</h2>
+  <textarea id="generalNotes" class="big-note" placeholder="Réservations, idées, restaurants, numéros utiles…"></textarea>
+  <div class="actions">
+    <button onclick="saveAll()">Enregistrer</button>
+    <button class="secondary" onclick="exportData()">Exporter</button>
+    <label class="button secondary" for="importFile">Importer</label>
+    <input type="file" id="importFile" accept=".json" hidden>
+  </div>
+  <p id="saveStatus" class="status"></p>
+</section>
+
+<section id="checklist" class="panel">
+  <h2>Checklist</h2>
+  <div id="checklistItems" class="card"></div>
+</section>
+</main>
+
+<script>window.ITINERARY = [{"date": "30 juillet", "title": "Arrivée à Chengdu", "place": "Chengdu", "night": "Chengdu", "lat": 30.5728, "lon": 104.0668, "plan": ["Arrivée et installation", "Retrouvailles avec votre fils", "Dîner tranquille à Chengdu"]}, {"date": "31 juillet", "title": "Départ vers Emeishan", "place": "Emeishan", "night": "Emeishan", "lat": 29.6012, "lon": 103.4845, "plan": ["Train Chengdu → Emeishan", "Installation près des navettes du Mont Emei", "Repos pour départ matinal"]}, {"date": "1 août", "title": "Mont Emei", "place": "Mont Emei", "night": "Emeishan", "lat": 29.5229, "lon": 103.3321, "plan": ["Départ dès l’ouverture", "Bus panoramique vers Leidongping", "Téléphérique et randonnée au Sommet d’Or"]}, {"date": "2 août", "title": "Grand Bouddha de Leshan", "place": "Leshan", "night": "Chengdu", "lat": 29.5449, "lon": 103.7739, "plan": ["Visite dès l’ouverture", "Balade autour du site", "Retour à Chengdu en soirée"]}, {"date": "3 août", "title": "Route vers Jiuzhaigou", "place": "Jiuzhaigou", "night": "Jiuzhaigou", "lat": 33.26, "lon": 103.9186, "plan": ["Train vers Huanglongjiuzhai", "Navette vers Jiuzhaigou", "Installation près de l’entrée du parc"]}, {"date": "4 août", "title": "Parc national de Jiuzhaigou", "place": "Jiuzhaigou", "night": "Jiuzhaigou", "lat": 33.26, "lon": 103.9186, "plan": ["Entrée dès l’ouverture", "Lacs turquoise et cascades", "Randonnée sur passerelles"]}, {"date": "5 août", "title": "Huanglong", "place": "Huanglong", "night": "Jiuzhaigou", "lat": 32.7472, "lon": 103.8337, "plan": ["Départ matinal", "Bassins turquoise", "Randonnée en altitude"]}, {"date": "6 août", "title": "Route vers Dujiangyan", "place": "Dujiangyan", "night": "Dujiangyan", "lat": 31.005, "lon": 103.6194, "plan": ["Train et transfert", "Installation", "Promenade en vieille ville"]}, {"date": "7 août", "title": "Mont Qingcheng et Dujiangyan", "place": "Dujiangyan", "night": "Chongqing", "lat": 30.9, "lon": 103.565, "plan": ["Mont Qingcheng tôt le matin", "Système d’irrigation de Dujiangyan", "Train vers Chongqing"]}, {"date": "8 août", "title": "Chongqing", "place": "Chongqing", "night": "Chongqing", "lat": 29.563, "lon": 106.5516, "plan": ["Jiefangbei", "Hongyadong", "Téléphérique du Yangtsé et promenade nocturne"]}, {"date": "9 août", "title": "Chongqing vers Anshun", "place": "Anshun", "night": "Anshun", "lat": 26.2456, "lon": 105.9322, "plan": ["Train vers Anshun", "Installation près des chutes", "Repos"]}, {"date": "10 août", "title": "Chutes de Huangguoshu", "place": "Huangguoshu", "night": "Kaili", "lat": 25.9926, "lon": 105.6671, "plan": ["Visite dès l’ouverture", "Parcours des chutes", "Transfert vers Kaili"]}, {"date": "11 août", "title": "Kaili", "place": "Kaili", "night": "Kaili", "lat": 26.5835, "lon": 107.9785, "plan": ["Musée Miao et Dong", "Marché local", "Artisanat et villages proches"]}, {"date": "12 août", "title": "Kaili vers Jiangkou", "place": "Jiangkou", "night": "Jiangkou", "lat": 27.6997, "lon": 108.8399, "plan": ["Transfert vers Jiangkou", "Installation au pied du Mont Fanjing", "Préparation du lendemain"]}, {"date": "13 août", "title": "Mont Fanjing", "place": "Mont Fanjing", "night": "Guiyang", "lat": 27.915, "lon": 108.699, "plan": ["Départ très tôt", "Téléphérique et randonnée", "Retour vers Guiyang"]}, {"date": "14 août", "title": "Guiyang et Qingyan", "place": "Guiyang", "night": "Guiyang", "lat": 26.647, "lon": 106.6302, "plan": ["Vieille ville de Qingyan", "Découverte de Guiyang", "Dîner local"]}, {"date": "15 août", "title": "Retour à Chengdu", "place": "Chengdu", "night": "Chengdu", "lat": 30.5728, "lon": 104.0668, "plan": ["Train Guiyang → Chengdu", "Installation", "Soirée libre"]}, {"date": "16 août", "title": "Chengdu en famille", "place": "Chengdu", "night": "Chengdu", "lat": 30.5728, "lon": 104.0668, "plan": ["Journée avec votre fils", "Fondue du Sichuan", "Opéra du Sichuan possible"]}, {"date": "17 août", "title": "Dernière journée", "place": "Chengdu", "night": "—", "lat": 30.5728, "lon": 104.0668, "plan": ["Derniers achats", "Dîner familial", "Départ vers l’aéroport vers 22 h 30"]}, {"date": "18 août", "title": "Vol retour", "place": "Chengdu", "night": "—", "lat": 30.5728, "lon": 104.0668, "plan": ["Vol retour à 2 h du matin"]}];</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
