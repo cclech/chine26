@@ -41,18 +41,77 @@ $('#sharedAlbum').value=localStorage.getItem('cn26_album')||'';function saveShar
 const galleryDB=[];$('#photoInput').onchange=e=>{[...e.target.files].forEach(f=>{const r=new FileReader();r.onload=()=>{galleryDB.push(r.result);$('#localGallery').innerHTML=galleryDB.map(x=>`<img src="${x}">`).join('')};r.readAsDataURL(f)})};
 function todayCard(){const now=new Date(),p=DAYS.map((d,i)=>{const m=d.date.match(/(\d+)\s+(juillet|août)/);if(!m)return null;return{i,date:new Date(2026,m[2]==='juillet'?6:7,+m[1])}}).filter(Boolean);const f=p.find(x=>x.date.toDateString()===now.toDateString())||p.find(x=>x.date>=now)||p.at(-1),d=DAYS[f.i];$('#today').innerHTML=`<strong>${d.date} — ${d.title}</strong><p>${d.plan.join(' · ')}</p>`}todayCard();
 
-const mapObj=L.map('mapBox',{worldCopyJump:true});window.mapObj=mapObj;L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(mapObj);
-const icon=(txt,cls)=>L.divIcon({className:'',html:`<div class="marker ${cls}">${txt}</div>`,iconSize:[34,34],iconAnchor:[17,17]});
-const label=(t,c='map-label')=>L.divIcon({className:'label-wrapper',html:`<div class="${c}">${t}</div>`,iconSize:[1,1]});
+
+const mapObj=L.map('mapBox');window.mapObj=mapObj;
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19,attribution:'© OpenStreetMap'
+}).addTo(mapObj);
+
+const icon=(txt,cls)=>L.divIcon({
+  className:'',
+  html:`<div class="marker ${cls}">${txt}</div>`,
+  iconSize:[34,34],iconAnchor:[17,17]
+});
+const label=(t,c='map-label')=>L.divIcon({
+  className:'label-wrapper',
+  html:`<div class="${c}">${t}</div>`,
+  iconSize:[1,1]
+});
+
 const points=[
-{name:'Rennes',lat:48.1035,lon:-1.6722,ico:'🚄',cls:'europe'},
-{name:'Lille',lat:50.6366,lon:3.0753,ico:'🚆',cls:'europe'},
-{name:'Bruxelles',lat:50.8503,lon:4.3517,ico:'✈️',cls:'airport'},
-...DAYS.slice(2).filter((d,i,a)=>a.findIndex(x=>x.place===d.place)===i).map(d=>({name:d.place,lat:d.lat,lon:d.lon,ico:'★',cls:'visit'}))
+{name:'Chengdu',lat:30.5728,lon:104.0668,kind:'hotel'},
+{name:'Mont Emei',lat:29.5229,lon:103.3321,kind:'visit'},
+{name:'Grand Bouddha de Leshan',lat:29.5449,lon:103.7739,kind:'visit'},
+{name:'Jiuzhaigou',lat:33.2600,lon:103.9186,kind:'visit'},
+{name:'Huanglong',lat:32.7472,lon:103.8337,kind:'visit'},
+{name:'Dujiangyan',lat:31.0050,lon:103.6194,kind:'hotel'},
+{name:'Mont Qingcheng',lat:30.9000,lon:103.5650,kind:'visit'},
+{name:'Chongqing',lat:29.5630,lon:106.5516,kind:'hotel'},
+{name:'Anshun',lat:26.2456,lon:105.9322,kind:'hotel'},
+{name:'Huangguoshu',lat:25.9926,lon:105.6671,kind:'visit'},
+{name:'Kaili',lat:26.5835,lon:107.9785,kind:'hotel'},
+{name:'Jiangkou',lat:27.6997,lon:108.8399,kind:'hotel'},
+{name:'Mont Fanjing',lat:27.9150,lon:108.6990,kind:'visit'},
+{name:'Guiyang',lat:26.6470,lon:106.6302,kind:'hotel'}
 ];
-points.forEach(p=>{L.marker([p.lat,p.lon],{icon:icon(p.ico,p.cls)}).addTo(mapObj).bindPopup(`<b>${p.name}</b>`);L.marker([p.lat,p.lon],{icon:label(p.name)}).addTo(mapObj)});
-SEGMENTS.forEach(s=>{const flight=s.t.includes('✈️');L.polyline([s.a,s.b],{color:flight?'#563c8c':'#8f2b24',weight:flight?3:4,dashArray:flight?'12,8':'8,6'}).addTo(mapObj);if(!flight||mapObj.getZoom()>3){const m=[(s.a[0]+s.b[0])/2,(s.a[1]+s.b[1])/2];L.marker(m,{icon:label(s.t,'time-label')}).addTo(mapObj)}});
-const globalBounds=L.latLngBounds([[24,-6],[53,112]]),europeBounds=L.latLngBounds([[47,-3],[52,6]]),chinaBounds=L.latLngBounds([[24,102],[35,110]]);
-function showGlobal(){mapObj.fitBounds(globalBounds,{padding:[30,30]})}function showEurope(){mapObj.fitBounds(europeBounds,{padding:[30,30]})}function showChina(){mapObj.fitBounds(chinaBounds,{padding:[30,30]})}window.showGlobal=showGlobal;window.showEurope=showEurope;window.showChina=showChina;showGlobal();
-const leg=L.control({position:'bottomright'});leg.onAdd=()=>{const d=L.DomUtil.create('div','map-legend');d.innerHTML='🚄 Train · ✈️ Vol · ★ Site<br>Trait rouge : circuit en Chine';return d};leg.addTo(mapObj);
+
+points.forEach(p=>{
+  const cls=p.kind==='visit'?'visit':'hotel';
+  const txt=p.kind==='visit'?'★':'🛏';
+  L.marker([p.lat,p.lon],{icon:icon(txt,cls)}).addTo(mapObj).bindPopup(`<b>${p.name}</b>`);
+  L.marker([p.lat,p.lon],{icon:label(p.name)}).addTo(mapObj);
+});
+
+const segments=[
+{a:[30.5728,104.0668],b:[29.6012,103.4845],t:'🚄 1 h à 1 h 30'},
+{a:[29.6012,103.4845],b:[29.5449,103.7739],t:'🚄 20 à 30 min'},
+{a:[29.5449,103.7739],b:[30.5728,104.0668],t:'🚄 environ 1 h'},
+{a:[30.5728,104.0668],b:[33.2600,103.9186],t:'🚄 + navette 3 h 30 à 4 h 30'},
+{a:[33.2600,103.9186],b:[32.7472,103.8337],t:'🚌 environ 2 h'},
+{a:[33.2600,103.9186],b:[31.0050,103.6194],t:'🚄 + transfert 3 h à 4 h'},
+{a:[31.0050,103.6194],b:[29.5630,106.5516],t:'🚄 2 h à 2 h 30'},
+{a:[29.5630,106.5516],b:[26.2456,105.9322],t:'🚄 environ 2 h 30'},
+{a:[26.2456,105.9322],b:[25.9926,105.6671],t:'🚌 45 min à 1 h'},
+{a:[25.9926,105.6671],b:[26.5835,107.9785],t:'🚄 + transfert 2 h 30 à 3 h 30'},
+{a:[26.5835,107.9785],b:[27.6997,108.8399],t:'🚗 2 h 30 à 3 h 30'},
+{a:[27.6997,108.8399],b:[27.9150,108.6990],t:'🚗 30 à 45 min'},
+{a:[27.9150,108.6990],b:[26.6470,106.6302],t:'🚗 + 🚄 3 h à 4 h'},
+{a:[26.6470,106.6302],b:[30.5728,104.0668],t:'🚄 3 h 30 à 4 h 30'}
+];
+
+segments.forEach(s=>{
+  L.polyline([s.a,s.b],{color:'#8f2b24',weight:4,dashArray:'8,6'}).addTo(mapObj);
+  const m=[(s.a[0]+s.b[0])/2,(s.a[1]+s.b[1])/2];
+  L.marker(m,{icon:label(s.t,'time-label')}).addTo(mapObj);
+});
+
+mapObj.fitBounds(points.map(p=>[p.lat,p.lon]),{padding:[30,30]});
+const leg=L.control({position:'bottomright'});
+leg.onAdd=()=>{
+  const d=L.DomUtil.create('div','map-legend');
+  d.innerHTML='★ Site à visiter<br>🛏 Ville-étape / hébergement';
+  return d;
+};
+leg.addTo(mapObj);
+
 if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
