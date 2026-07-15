@@ -6,7 +6,7 @@
 main{max-width:1150px;margin:auto;padding:16px 16px 90px}.view{display:none}.view.active{display:block}.hero{height:54vh;min-height:390px;border-radius:22px;background:linear-gradient(135deg,#7b241e,#253e54);background-size:cover;background-position:center;overflow:hidden}.shade{height:100%;padding:28px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(transparent,rgba(20,15,12,.82));color:#fff}.shade h2{font-size:clamp(2rem,7vw,4.5rem);margin:4px 0}.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-weight:900;font-size:.75rem!important}
 button,.button{border:0;border-radius:11px;padding:11px 14px;background:var(--red);color:#fff;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block}.soft{background:#fff!important;color:var(--ink)!important;border:1px solid var(--line)!important}.hidden{display:none!important}
 .grid2{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:16px;margin:13px 0;box-shadow:0 5px 18px rgba(62,38,20,.06)}.muted{color:var(--muted)}.warning{background:#fff7dc}
-.day{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:15px 0}.day-photo{height:190px;background:linear-gradient(135deg,#b98559,#536e72);background-size:cover;background-position:center;position:relative}.day-photo .caption{position:absolute;inset:auto 0 0;padding:35px 15px 12px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.78));font-weight:900}.day-body{padding:15px}.date{color:var(--red);font-weight:900}.day h3{margin:4px 0}.day ul{padding-left:20px}.day details{border-top:1px solid var(--line);padding-top:10px}.day summary{font-weight:900;color:var(--red);cursor:pointer}
+.day{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:15px 0}.day-body{padding:15px}.date{color:var(--red);font-weight:900}.day h3{margin:4px 0}.day ul{padding-left:20px}.day details{border-top:1px solid var(--line);padding-top:10px}.day summary{font-weight:900;color:var(--red);cursor:pointer}
 textarea,input[type=text],input[type=url]{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px;font:inherit;background:#fff}.day textarea{min-height:120px;margin-top:10px}.big{min-height:260px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ok{color:#28714d;font-weight:800}
 .hotel-card{display:grid;grid-template-columns:1fr;gap:14px}.hotel-pick{padding:13px;border-radius:13px;background:#f6eee6}.hotel-pick h3{margin:0 0 5px}.your-hotel{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.train-row,.reservation-row{display:grid;grid-template-columns:1fr;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}
 #mapBox{height:74vh;min-height:560px;border-radius:18px;border:1px solid var(--line);overflow:hidden}.map-head{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}.marker{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;border:3px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.3);font-weight:900}.visit{background:var(--red)}.hotel{background:var(--blue)}.europe{background:#395d2d}.airport{background:#563c8c}.label-wrapper{background:transparent!important;border:0!important}.map-label,.time-label{white-space:nowrap;border-radius:8px;padding:4px 7px;font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.18)}.map-label{background:#fff;color:#6e1f19;transform:translate(18px,-12px);font-size:11px}.time-label{background:#fff5cc;color:#5a4712;transform:translate(-50%,-50%);font-size:10px;border:1px solid #e5cc78}.map-legend{background:#fff;padding:10px;border-radius:11px;line-height:1.8;box-shadow:0 3px 12px rgba(0,0,0,.2)}
@@ -30,4 +30,41 @@ textarea,input[type=text],input[type=url]{width:100%;border:1px solid var(--line
 .day-photo.photo-loaded{
   background-size:cover;
   background-position:center;
+}
+
+.day-image{
+  display:block;
+  width:auto;
+  max-width:100%;
+  max-height:520px;
+  height:auto;
+  margin:16px auto;
+  border-radius:14px;
+  box-shadow:0 5px 18px rgba(0,0,0,.12);
+}
+.journal-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.journal-grid section{
+  background:#f8f2eb;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:12px 14px;
+}
+.journal-grid h4{margin:0 0 7px;color:var(--red)}
+.journal-grid p,.journal-grid ul{margin:0;line-height:1.55}
+.journal-grid ul{padding-left:19px}
+.source-link a{color:var(--red);font-weight:800}
+.verification-note{
+  font-size:.83rem;
+  color:var(--muted);
+  padding:9px 11px;
+  background:#fff7dc;
+  border-radius:10px;
+}
+@media(min-width:760px){
+  .journal-grid{grid-template-columns:1fr 1fr}
 }

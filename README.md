@@ -1,12 +1,11 @@
-# Notre Voyage en Chine – Été 2026 — V5
+# Notre Voyage en Chine – Été 2026 — V6
 
-Corrections :
-- carte centrée sur la Chine ;
-- suppression des noms personnels ;
-- retrait de l’hôtel Holiday Inn Express Chengdu Xindu ;
-- hôtel à Chengdu laissé à définir près des coordonnées du logement familial ;
-- photos du journal chargées en haute résolution depuis Wikimedia ;
-- suppression du cache persistant du service worker.
+Cette version ajoute :
+- un journal détaillé pour chaque journée ;
+- les horaires d’ouverture connus ou indicatifs ;
+- un programme conseillé heure par heure ;
+- les durées, billets, points forts et conseils ;
+- des photos affichées en entier, sans bandeau ni déformation ;
+- aucun cache persistant.
 
 Publier tous les fichiers à la racine du dépôt GitHub Pages.
-L’adresse reste : https://cclech.github.io/chine26/

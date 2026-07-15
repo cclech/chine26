@@ -22,9 +22,50 @@ const fallback={
 "Fanjing_Mountain":"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=80",
 "Qingyan":"https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=80",
 "Chengdu_Tianfu_International_Airport":"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80"};
-async function setPhoto(el,page){let u='';try{const r=await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(page)}`);if(r.ok){const j=await r.json();u=j.thumbnail?.source||j.originalimage?.source||''}}catch{};u=u||fallback[page]||fallback.Chengdu;el.style.backgroundImage=`url("${u}")`}
+async function setPhoto(img,page){
+  const u=await getPhoto(page);
+  if(u){
+    img.src=u;
+    img.alt=page.replaceAll('_',' ');
+    img.hidden=false;
+  }else{
+    img.hidden=true;
+  }
+}
 
-DAYS.forEach((d,i)=>{const a=document.createElement('article');a.className='day';a.innerHTML=`<div class="day-photo" id="photo-${i}"><div class="caption">${d.place}</div></div><div class="day-body"><div class="date">${d.date}</div><h3>${d.title}</h3><div class="muted">Nuit : ${d.night}</div><ul>${d.plan.map(x=>`<li>${x}</li>`).join('')}</ul><details><summary>Notre récit et nos notes</summary><textarea id="day-${i}" placeholder="Racontez la journée…"></textarea><div class="actions"><button onclick="saveDay(${i})">Enregistrer</button></div></details></div>`;$('#days').appendChild(a);$(`#day-${i}`).value=localStorage.getItem(keyDay(i))||'';setPhoto($(`#photo-${i}`),d.wiki)});setPhoto($('#mainHero'),'Jiuzhaigou');
+DAYS.forEach((d,i)=>{
+  const a=document.createElement('article');
+  a.className='day';
+  const sourceLink=d.source?`<p class="source-link"><a href="${d.source}" target="_blank" rel="noopener">Vérifier les informations officielles</a></p>`:'';
+  const schedule=(d.schedule||[]).map(x=>`<li>${x}</li>`).join('');
+  const highlights=(d.highlights||[]).map(x=>`<li>${x}</li>`).join('');
+  a.innerHTML=`
+    <div class="day-body">
+      <div class="date">${d.date}</div>
+      <h3>${d.title}</h3>
+      <div class="muted">Nuit : ${d.night}</div>
+      <img class="day-image" id="photo-${i}" hidden>
+      <div class="journal-grid">
+        <section><h4>⏰ Horaires et ouverture</h4><p>${d.opening||'À vérifier.'}</p></section>
+        <section><h4>🗓️ Programme conseillé</h4><ul>${schedule}</ul></section>
+        <section><h4>⏱️ Durée</h4><p>${d.duration||''}</p></section>
+        <section><h4>🎫 Billets</h4><p>${d.tickets||''}</p></section>
+        <section><h4>📷 À ne pas manquer</h4><ul>${highlights}</ul></section>
+        <section><h4>⚠️ Conseil</h4><p>${d.advice||''}</p></section>
+      </div>
+      ${sourceLink}
+      <p class="verification-note">Horaires indicatifs pour l’été 2026 : vérifier à nouveau sur le billet ou le site officiel avant la visite.</p>
+      <details>
+        <summary>Notre récit et nos notes</summary>
+        <textarea id="day-${i}" placeholder="Racontez la journée…"></textarea>
+        <div class="actions"><button onclick="saveDay(${i})">Enregistrer</button></div>
+      </details>
+    </div>`;
+  $('#days').appendChild(a);
+  $(`#day-${i}`).value=localStorage.getItem(keyDay(i))||'';
+  setPhoto($(`#photo-${i}`),d.wiki);
+});
+setPhoto($('#mainHero'),'Jiuzhaigou');
 
 RESERVATIONS.forEach(r=>{const d=document.createElement('article');d.className='card reservation-row';d.innerHTML=`<strong>${r.type}<br>${r.title}</strong><span>${r.date}<br>${r.time}</span><span class="ok">${r.status}</span><strong>${r.price}</strong>`;$('#reservationCards').appendChild(d)});
 HOTELS.forEach((h,i)=>{const a=document.createElement('article');a.className='card hotel-card';a.innerHTML=`<div class="hotel-pick"><div class="muted">Suggestion Booking.com · ${h.city}</div><h3>${h.recommended}</h3><p>${h.why}</p><a href="${h.source}" target="_blank">Voir sur Booking.com</a></div><div><h3>Mon hôtel réservé</h3><input id="hotel-${i}" type="text" placeholder="Nom de l’hôtel"><textarea id="hotel-note-${i}" placeholder="Adresse, téléphone, réservation…"></textarea><div class="actions"><button onclick="saveHotel(${i})">Enregistrer</button></div></div>`;$('#hotelCards').appendChild(a);const v=JSON.parse(localStorage.getItem(keyHotel(i))||'{}');$(`#hotel-${i}`).value=v.name||'';$(`#hotel-note-${i}`).value=v.note||''});
