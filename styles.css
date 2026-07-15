@@ -125,3 +125,7 @@ select{
   .train-booking-grid{grid-template-columns:1fr 1fr}
   .train-booking-grid label:last-child{grid-column:1/-1}
 }
+
+.credits-list{line-height:1.7;padding-left:20px}
+.credits-list a{color:var(--red);font-weight:700}
+.day-image{object-fit:contain;background:#f3eee7}

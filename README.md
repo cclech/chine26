@@ -1,13 +1,17 @@
-# Notre Voyage en Chine – Été 2026 — V7
+# Notre Voyage en Chine – Été 2026 — V8
 
-Nouveautés :
-- photos emblématiques rétablies dans le journal ;
-- images affichées sans recadrage ni déformation ;
-- image de remplacement propre si Wikipédia ne répond pas ;
-- page Trains avec date d’ouverture des ventes pour chaque trajet ;
-- statut modifiable : à réserver, pré-réservé ou réservé ;
-- champs pour numéro, horaire, gare, siège et prix ;
-- aucun paramètre `?v=` nécessaire.
+Cette version contient un dossier `images` local.
 
-Les dates d’ouverture sont calculées sur la base d’une fenêtre de vente de 15 jours.
-Vérifiez toujours la date et l’heure exactes sur China Railway 12306.
+## Publication GitHub Pages
+Déposez à la racine du dépôt :
+- index.html
+- app.js
+- styles.css
+- manifest.webmanifest
+- service-worker.js
+- README.md
+- le dossier complet `images`
+
+Ne déposez pas uniquement les fichiers HTML : le dossier `images` est indispensable.
+
+Les photos proviennent de Wikimedia Commons. Consultez la page « Crédits photos » du site.

@@ -5,88 +5,17 @@ function showView(id){$$('.view').forEach(v=>v.classList.remove('active'));$$('.
 $$('.tabs button').forEach(b=>b.onclick=()=>showView(b.dataset.view));
 
 const keyDay=i=>'cn26_day_'+i,keyHotel=i=>'cn26_hotel_'+i,keyTrain=i=>'cn26_train_'+i;
-const photoPages={
-  "Rennes_station":"Rennes_station",
-  "Air_China":"Air_China",
-  "Chengdu":"Chengdu",
-  "Emeishan_City":"Mount_Emei",
-  "Mount_Emei":"Mount_Emei",
-  "Leshan_Giant_Buddha":"Leshan_Giant_Buddha",
-  "Jiuzhaigou":"Jiuzhaigou",
-  "Huanglong_Scenic_and_Historic_Interest_Area":"Huanglong_Scenic_and_Historic_Interest_Area",
-  "Dujiangyan":"Dujiangyan",
-  "Mount_Qingcheng":"Mount_Qingcheng",
-  "Chongqing":"Chongqing",
-  "Anshun":"Anshun",
-  "Huangguoshu_Waterfall":"Huangguoshu_Waterfall",
-  "Kaili_City":"Kaili_City",
-  "Jiangkou_County":"Fanjing_Mountain",
-  "Fanjing_Mountain":"Fanjing_Mountain",
-  "Qingyan":"Qingyan",
-  "Sichuan_opera":"Sichuan_opera",
-  "Chengdu_Tianfu_International_Airport":"Chengdu_Tianfu_International_Airport"
-};
+const LOCAL_PHOTOS={"Rennes_station": "images/rennes.jpg", "Air_China": "images/air-china.jpg", "Chengdu": "images/chengdu.jpg", "Emeishan_City": "images/mont-emei.jpg", "Mount_Emei": "images/mont-emei.jpg", "Leshan_Giant_Buddha": "images/leshan.jpg", "Jiuzhaigou": "images/jiuzhaigou.jpg", "Huanglong_Scenic_and_Historic_Interest_Area": "images/huanglong.jpg", "Dujiangyan": "images/dujiangyan.jpg", "Mount_Qingcheng": "images/qingcheng.jpg", "Chongqing": "images/chongqing.jpg", "Anshun": "images/huangguoshu.jpg", "Huangguoshu_Waterfall": "images/huangguoshu.jpg", "Kaili_City": "images/kaili.jpg", "Jiangkou_County": "images/fanjing.jpg", "Fanjing_Mountain": "images/fanjing.jpg", "Qingyan": "images/qingyan.jpg", "Sichuan_opera": "images/opera-sichuan.jpg", "Chengdu_Tianfu_International_Airport": "images/tianfu-airport.jpg"};
 
-const photoFallbackText={
-  "Rennes_station":"Gare de Rennes",
-  "Air_China":"Vol vers Chengdu",
-  "Chengdu":"Chengdu",
-  "Emeishan_City":"Mont Emei",
-  "Mount_Emei":"Sommet d’Or du Mont Emei",
-  "Leshan_Giant_Buddha":"Grand Bouddha de Leshan",
-  "Jiuzhaigou":"Jiuzhaigou",
-  "Huanglong_Scenic_and_Historic_Interest_Area":"Bassins de Huanglong",
-  "Dujiangyan":"Dujiangyan",
-  "Mount_Qingcheng":"Mont Qingcheng",
-  "Chongqing":"Chongqing",
-  "Anshun":"Anshun",
-  "Huangguoshu_Waterfall":"Chutes de Huangguoshu",
-  "Kaili_City":"Kaili",
-  "Jiangkou_County":"Région du Mont Fanjing",
-  "Fanjing_Mountain":"Mont Fanjing",
-  "Qingyan":"Vieille ville de Qingyan",
-  "Sichuan_opera":"Opéra du Sichuan",
-  "Chengdu_Tianfu_International_Airport":"Aéroport de Chengdu-Tianfu"
-};
-
-async function getPhoto(page){
-  const title=photoPages[page]||page;
-  try{
-    const api=`https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&origin=*&piprop=original|thumbnail&pithumbsize=1600&titles=${encodeURIComponent(title)}`;
-    const response=await fetch(api,{cache:'no-store'});
-    if(!response.ok) return '';
-    const data=await response.json();
-    const record=Object.values(data.query?.pages||{})[0]||{};
-    return record.original?.source||record.thumbnail?.source||'';
-  }catch(e){
-    return '';
+function setPhoto(element,page){
+  const url=LOCAL_PHOTOS[page]||LOCAL_PHOTOS["Chengdu"];
+  if(element.tagName==="IMG"){
+    element.src=url;
+    element.alt=(page||"Photo du voyage").replaceAll("_"," ");
+    element.hidden=false;
+  }else{
+    element.style.backgroundImage=`url("${url}")`;
   }
-}
-
-function makePhotoPlaceholder(text){
-  const safe=(text||'Notre voyage en Chine').replace(/[<>&"]/g,'');
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
-    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#8f2b24"/><stop offset="1" stop-color="#315b68"/>
-    </linearGradient></defs>
-    <rect width="1200" height="700" fill="url(#g)"/>
-    <circle cx="1030" cy="130" r="90" fill="#f4d06f" opacity=".85"/>
-    <path d="M0 580 Q260 390 520 575 T1200 500 V700 H0Z" fill="#1f3f48" opacity=".85"/>
-    <text x="600" y="350" text-anchor="middle" fill="white" font-family="Arial,sans-serif"
-      font-size="58" font-weight="700">${safe}</text>
-  </svg>`;
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-}
-
-async function setPhoto(img,page){
-  const url=await getPhoto(page);
-  img.src=url||makePhotoPlaceholder(photoFallbackText[page]||page);
-  img.alt=photoFallbackText[page]||page.replaceAll('_',' ');
-  img.hidden=false;
-  img.onerror=()=>{
-    img.onerror=null;
-    img.src=makePhotoPlaceholder(photoFallbackText[page]||page);
-  };
 }
 
 DAYS.forEach((d,i)=>{
