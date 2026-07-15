@@ -12,3 +12,22 @@ textarea,input[type=text],input[type=url]{width:100%;border:1px solid var(--line
 #mapBox{height:74vh;min-height:560px;border-radius:18px;border:1px solid var(--line);overflow:hidden}.map-head{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}.marker{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;border:3px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.3);font-weight:900}.visit{background:var(--red)}.hotel{background:var(--blue)}.europe{background:#395d2d}.airport{background:#563c8c}.label-wrapper{background:transparent!important;border:0!important}.map-label,.time-label{white-space:nowrap;border-radius:8px;padding:4px 7px;font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.18)}.map-label{background:#fff;color:#6e1f19;transform:translate(18px,-12px);font-size:11px}.time-label{background:#fff5cc;color:#5a4712;transform:translate(-50%,-50%);font-size:10px;border:1px solid #e5cc78}.map-legend{background:#fff;padding:10px;border-radius:11px;line-height:1.8;box-shadow:0 3px 12px rgba(0,0,0,.2)}
 .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:13px}.gallery img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px}.check{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.check input{width:20px;height:20px}
 @media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}.hotel-card{grid-template-columns:1.2fr 1fr}.train-row{grid-template-columns:1.2fr 1fr 1fr}.reservation-row{grid-template-columns:1fr 1fr .7fr .7fr}.gallery{grid-template-columns:repeat(4,1fr)}.map-head{flex-direction:row;align-items:center;justify-content:space-between}.top h1{font-size:1.25rem}}
+
+.day-photo.photo-missing{
+  background-image:linear-gradient(135deg,#6d4438,#42606a)!important;
+}
+.day-photo.photo-missing::before{
+  content:"Photo du lieu non disponible";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:rgba(255,255,255,.88);
+  font-weight:800;
+  letter-spacing:.02em;
+}
+.day-photo.photo-loaded{
+  background-size:cover;
+  background-position:center;
+}
