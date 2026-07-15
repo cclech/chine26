@@ -1,11 +1,13 @@
-# Notre Voyage en Chine – Été 2026 — V6
+# Notre Voyage en Chine – Été 2026 — V7
 
-Cette version ajoute :
-- un journal détaillé pour chaque journée ;
-- les horaires d’ouverture connus ou indicatifs ;
-- un programme conseillé heure par heure ;
-- les durées, billets, points forts et conseils ;
-- des photos affichées en entier, sans bandeau ni déformation ;
-- aucun cache persistant.
+Nouveautés :
+- photos emblématiques rétablies dans le journal ;
+- images affichées sans recadrage ni déformation ;
+- image de remplacement propre si Wikipédia ne répond pas ;
+- page Trains avec date d’ouverture des ventes pour chaque trajet ;
+- statut modifiable : à réserver, pré-réservé ou réservé ;
+- champs pour numéro, horaire, gare, siège et prix ;
+- aucun paramètre `?v=` nécessaire.
 
-Publier tous les fichiers à la racine du dépôt GitHub Pages.
+Les dates d’ouverture sont calculées sur la base d’une fenêtre de vente de 15 jours.
+Vérifiez toujours la date et l’heure exactes sur China Railway 12306.

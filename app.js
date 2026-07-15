@@ -1,36 +1,92 @@
 
-const DAYS=window.DAYS,HOTELS=window.HOTELS,RESERVATIONS=window.RESERVATIONS,SEGMENTS=window.SEGMENTS;
+const DAYS=window.DAYS,HOTELS=window.HOTELS,RESERVATIONS=window.RESERVATIONS,SEGMENTS=window.SEGMENTS,TRAIN_BOOKINGS=window.TRAIN_BOOKINGS||[];
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 function showView(id){$$('.view').forEach(v=>v.classList.remove('active'));$$('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));$('#'+id).classList.add('active');if(id==='map'&&window.mapObj)setTimeout(()=>mapObj.invalidateSize(),100)}
 $$('.tabs button').forEach(b=>b.onclick=()=>showView(b.dataset.view));
 
 const keyDay=i=>'cn26_day_'+i,keyHotel=i=>'cn26_hotel_'+i,keyTrain=i=>'cn26_train_'+i;
-const fallback={
-"Rennes_station":"https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1600&q=80",
-"Air_China":"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80",
-"Chengdu":"https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?auto=format&fit=crop&w=1600&q=80",
-"Mount_Emei":"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80",
-"Leshan_Giant_Buddha":"https://images.unsplash.com/photo-1600093463592-2e8d28d7f1f6?auto=format&fit=crop&w=1600&q=80",
-"Jiuzhaigou":"https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80",
-"Huanglong_Scenic_and_Historic_Interest_Area":"https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80",
-"Dujiangyan":"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=80",
-"Mount_Qingcheng":"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80",
-"Chongqing":"https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1600&q=80",
-"Anshun":"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1600&q=80",
-"Huangguoshu_Waterfall":"https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1600&q=80",
-"Kaili_City":"https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1600&q=80",
-"Fanjing_Mountain":"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=80",
-"Qingyan":"https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=80",
-"Chengdu_Tianfu_International_Airport":"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80"};
-async function setPhoto(img,page){
-  const u=await getPhoto(page);
-  if(u){
-    img.src=u;
-    img.alt=page.replaceAll('_',' ');
-    img.hidden=false;
-  }else{
-    img.hidden=true;
+const photoPages={
+  "Rennes_station":"Rennes_station",
+  "Air_China":"Air_China",
+  "Chengdu":"Chengdu",
+  "Emeishan_City":"Mount_Emei",
+  "Mount_Emei":"Mount_Emei",
+  "Leshan_Giant_Buddha":"Leshan_Giant_Buddha",
+  "Jiuzhaigou":"Jiuzhaigou",
+  "Huanglong_Scenic_and_Historic_Interest_Area":"Huanglong_Scenic_and_Historic_Interest_Area",
+  "Dujiangyan":"Dujiangyan",
+  "Mount_Qingcheng":"Mount_Qingcheng",
+  "Chongqing":"Chongqing",
+  "Anshun":"Anshun",
+  "Huangguoshu_Waterfall":"Huangguoshu_Waterfall",
+  "Kaili_City":"Kaili_City",
+  "Jiangkou_County":"Fanjing_Mountain",
+  "Fanjing_Mountain":"Fanjing_Mountain",
+  "Qingyan":"Qingyan",
+  "Sichuan_opera":"Sichuan_opera",
+  "Chengdu_Tianfu_International_Airport":"Chengdu_Tianfu_International_Airport"
+};
+
+const photoFallbackText={
+  "Rennes_station":"Gare de Rennes",
+  "Air_China":"Vol vers Chengdu",
+  "Chengdu":"Chengdu",
+  "Emeishan_City":"Mont Emei",
+  "Mount_Emei":"Sommet d’Or du Mont Emei",
+  "Leshan_Giant_Buddha":"Grand Bouddha de Leshan",
+  "Jiuzhaigou":"Jiuzhaigou",
+  "Huanglong_Scenic_and_Historic_Interest_Area":"Bassins de Huanglong",
+  "Dujiangyan":"Dujiangyan",
+  "Mount_Qingcheng":"Mont Qingcheng",
+  "Chongqing":"Chongqing",
+  "Anshun":"Anshun",
+  "Huangguoshu_Waterfall":"Chutes de Huangguoshu",
+  "Kaili_City":"Kaili",
+  "Jiangkou_County":"Région du Mont Fanjing",
+  "Fanjing_Mountain":"Mont Fanjing",
+  "Qingyan":"Vieille ville de Qingyan",
+  "Sichuan_opera":"Opéra du Sichuan",
+  "Chengdu_Tianfu_International_Airport":"Aéroport de Chengdu-Tianfu"
+};
+
+async function getPhoto(page){
+  const title=photoPages[page]||page;
+  try{
+    const api=`https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&origin=*&piprop=original|thumbnail&pithumbsize=1600&titles=${encodeURIComponent(title)}`;
+    const response=await fetch(api,{cache:'no-store'});
+    if(!response.ok) return '';
+    const data=await response.json();
+    const record=Object.values(data.query?.pages||{})[0]||{};
+    return record.original?.source||record.thumbnail?.source||'';
+  }catch(e){
+    return '';
   }
+}
+
+function makePhotoPlaceholder(text){
+  const safe=(text||'Notre voyage en Chine').replace(/[<>&"]/g,'');
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#8f2b24"/><stop offset="1" stop-color="#315b68"/>
+    </linearGradient></defs>
+    <rect width="1200" height="700" fill="url(#g)"/>
+    <circle cx="1030" cy="130" r="90" fill="#f4d06f" opacity=".85"/>
+    <path d="M0 580 Q260 390 520 575 T1200 500 V700 H0Z" fill="#1f3f48" opacity=".85"/>
+    <text x="600" y="350" text-anchor="middle" fill="white" font-family="Arial,sans-serif"
+      font-size="58" font-weight="700">${safe}</text>
+  </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+async function setPhoto(img,page){
+  const url=await getPhoto(page);
+  img.src=url||makePhotoPlaceholder(photoFallbackText[page]||page);
+  img.alt=photoFallbackText[page]||page.replaceAll('_',' ');
+  img.hidden=false;
+  img.onerror=()=>{
+    img.onerror=null;
+    img.src=makePhotoPlaceholder(photoFallbackText[page]||page);
+  };
 }
 
 DAYS.forEach((d,i)=>{
@@ -70,14 +126,75 @@ setPhoto($('#mainHero'),'Jiuzhaigou');
 RESERVATIONS.forEach(r=>{const d=document.createElement('article');d.className='card reservation-row';d.innerHTML=`<strong>${r.type}<br>${r.title}</strong><span>${r.date}<br>${r.time}</span><span class="ok">${r.status}</span><strong>${r.price}</strong>`;$('#reservationCards').appendChild(d)});
 HOTELS.forEach((h,i)=>{const a=document.createElement('article');a.className='card hotel-card';a.innerHTML=`<div class="hotel-pick"><div class="muted">Suggestion Booking.com · ${h.city}</div><h3>${h.recommended}</h3><p>${h.why}</p><a href="${h.source}" target="_blank">Voir sur Booking.com</a></div><div><h3>Mon hôtel réservé</h3><input id="hotel-${i}" type="text" placeholder="Nom de l’hôtel"><textarea id="hotel-note-${i}" placeholder="Adresse, téléphone, réservation…"></textarea><div class="actions"><button onclick="saveHotel(${i})">Enregistrer</button></div></div>`;$('#hotelCards').appendChild(a);const v=JSON.parse(localStorage.getItem(keyHotel(i))||'{}');$(`#hotel-${i}`).value=v.name||'';$(`#hotel-note-${i}`).value=v.note||''});
 
-SEGMENTS.forEach((s,i)=>{const r=document.createElement('div');r.className='train-row';r.innerHTML=`<strong>${s.t}</strong><input id="train-${i}" type="text" placeholder="N° et horaire"><input id="train-note-${i}" type="text" placeholder="Gare, siège, prix">`;$('#trainRows').appendChild(r);const v=JSON.parse(localStorage.getItem(keyTrain(i))||'{}');$(`#train-${i}`).value=v.train||'';$(`#train-note-${i}`).value=v.note||''});
+TRAIN_BOOKINGS.forEach((t,i)=>{
+  const row=document.createElement('article');
+  row.className='train-booking-card';
+  const saved=JSON.parse(localStorage.getItem(`cn26_train_booking_${i}`)||'{}');
+  row.innerHTML=`
+    <div class="train-booking-head">
+      <div>
+        <div class="train-route">${t.route}</div>
+        <div class="muted">Trajet prévu le ${t.travel_date}</div>
+      </div>
+      <div class="sales-date">Réserver dès le<br><strong>${t.sales_date}</strong></div>
+    </div>
+    <div class="train-booking-grid">
+      <div><span class="field-label">Durée indicative</span><p>${t.duration}</p></div>
+      <div><span class="field-label">Conseil</span><p>${t.advice}</p></div>
+      <label><span class="field-label">Statut</span>
+        <select id="train-status-${i}">
+          <option value="À réserver">⬜ À réserver</option>
+          <option value="Pré-réservé">🟡 Pré-réservé</option>
+          <option value="Réservé">✅ Réservé</option>
+        </select>
+      </label>
+      <label><span class="field-label">N° et horaire</span>
+        <input id="train-${i}" type="text" placeholder="Ex. Cxxxx · 14 h 20">
+      </label>
+      <label><span class="field-label">Gare, siège et prix</span>
+        <input id="train-note-${i}" type="text" placeholder="Gare · voiture · siège · prix">
+      </label>
+    </div>
+    <button onclick="saveTrain(${i})">Enregistrer ce trajet</button>`;
+  $('#trainRows').appendChild(row);
+  $(`#train-status-${i}`).value=saved.status||'À réserver';
+  $(`#train-${i}`).value=saved.train||'';
+  $(`#train-note-${i}`).value=saved.note||'';
+});
 
 const checks=['Passeports','Billets d’avion','Assurance voyage','Alipay et WeChat Pay','eSIM ou carte SIM','Billets de train','Réservations Jiuzhaigou et Huanglong','Réservation Mont Fanjing','Hôtels','Médicaments','Veste imperméable','Chaussures de marche'];
 checks.forEach((x,i)=>{const l=document.createElement('label');l.className='check';l.innerHTML=`<input id="check-${i}" type="checkbox"><span>${x}</span>`;$('#checks').appendChild(l);$(`#check-${i}`).checked=localStorage.getItem('cn26_check_'+i)==='1';$(`#check-${i}`).onchange=e=>localStorage.setItem('cn26_check_'+i,e.target.checked?'1':'0')});
+function saveTrain(i){
+  localStorage.setItem(`cn26_train_booking_${i}`,JSON.stringify({
+    status:$(`#train-status-${i}`).value,
+    train:$(`#train-${i}`).value,
+    note:$(`#train-note-${i}`).value
+  }));
+  flash();
+}
 function saveDay(i){localStorage.setItem(keyDay(i),$(`#day-${i}`).value);flash()}function saveHotel(i){localStorage.setItem(keyHotel(i),JSON.stringify({name:$(`#hotel-${i}`).value,note:$(`#hotel-note-${i}`).value}));flash()}
-function saveAll(){DAYS.forEach((_,i)=>localStorage.setItem(keyDay(i),$(`#day-${i}`).value));HOTELS.forEach((_,i)=>saveHotel(i));SEGMENTS.forEach((_,i)=>localStorage.setItem(keyTrain(i),JSON.stringify({train:$(`#train-${i}`).value,note:$(`#train-note-${i}`).value})));localStorage.setItem('cn26_general',$('#generalNotes').value);flash()}
+function saveAll(){
+  DAYS.forEach((_,i)=>localStorage.setItem(keyDay(i),$(`#day-${i}`).value));
+  HOTELS.forEach((_,i)=>saveHotel(i));
+  TRAIN_BOOKINGS.forEach((_,i)=>saveTrain(i));
+  localStorage.setItem('cn26_general',$('#generalNotes').value);
+  flash();
+}
 function flash(){const s=$('#status');s.textContent='Enregistré ✓';setTimeout(()=>s.textContent='',1600)}$('#generalNotes').value=localStorage.getItem('cn26_general')||'';
-function exportData(){saveAll();const d={general:$('#generalNotes').value,days:{},hotels:{},trains:{},checks:{},album:$('#sharedAlbum').value};DAYS.forEach((_,i)=>d.days[i]=$(`#day-${i}`).value);HOTELS.forEach((_,i)=>d.hotels[i]={name:$(`#hotel-${i}`).value,note:$(`#hotel-note-${i}`).value});SEGMENTS.forEach((_,i)=>d.trains[i]={train:$(`#train-${i}`).value,note:$(`#train-note-${i}`).value});checks.forEach((_,i)=>d.checks[i]=$(`#check-${i}`).checked);const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='notre-voyage-chine-2026.json';a.click()}
+function exportData(){
+  saveAll();
+  const d={general:$('#generalNotes').value,days:{},hotels:{},trains:{},checks:{},album:$('#sharedAlbum').value};
+  DAYS.forEach((_,i)=>d.days[i]=$(`#day-${i}`).value);
+  HOTELS.forEach((_,i)=>d.hotels[i]={name:$(`#hotel-${i}`).value,note:$(`#hotel-note-${i}`).value});
+  TRAIN_BOOKINGS.forEach((_,i)=>d.trains[i]={
+    status:$(`#train-status-${i}`).value,
+    train:$(`#train-${i}`).value,
+    note:$(`#train-note-${i}`).value
+  });
+  checks.forEach((_,i)=>d.checks[i]=$(`#check-${i}`).checked);
+  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download='notre-voyage-chine-2026.json';a.click();
+}
 $('#sharedAlbum').value=localStorage.getItem('cn26_album')||'';function saveSharedAlbum(){const u=$('#sharedAlbum').value.trim();localStorage.setItem('cn26_album',u);const a=$('#openAlbum');if(u){a.href=u;a.classList.remove('hidden')}else a.classList.add('hidden')}saveSharedAlbum();
 const galleryDB=[];$('#photoInput').onchange=e=>{[...e.target.files].forEach(f=>{const r=new FileReader();r.onload=()=>{galleryDB.push(r.result);$('#localGallery').innerHTML=galleryDB.map(x=>`<img src="${x}">`).join('')};r.readAsDataURL(f)})};
 function todayCard(){const now=new Date(),p=DAYS.map((d,i)=>{const m=d.date.match(/(\d+)\s+(juillet|août)/);if(!m)return null;return{i,date:new Date(2026,m[2]==='juillet'?6:7,+m[1])}}).filter(Boolean);const f=p.find(x=>x.date.toDateString()===now.toDateString())||p.find(x=>x.date>=now)||p.at(-1),d=DAYS[f.i];$('#today').innerHTML=`<strong>${d.date} — ${d.title}</strong><p>${d.plan.join(' · ')}</p>`}todayCard();

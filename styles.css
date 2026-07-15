@@ -68,3 +68,60 @@ textarea,input[type=text],input[type=url]{width:100%;border:1px solid var(--line
 @media(min-width:760px){
   .journal-grid{grid-template-columns:1fr 1fr}
 }
+
+.train-booking-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  margin:14px 0;
+  box-shadow:0 4px 14px rgba(60,35,20,.06);
+}
+.train-booking-head{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+}
+.train-route{font-size:1.08rem;font-weight:900;color:var(--red)}
+.sales-date{
+  background:#fff1c7;
+  border:1px solid #e4cb72;
+  border-radius:11px;
+  padding:8px 11px;
+  color:#5d4810;
+  line-height:1.35;
+}
+.train-booking-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin:13px 0;
+}
+.train-booking-grid p{margin:5px 0 0}
+.field-label{
+  display:block;
+  font-size:.78rem;
+  font-weight:900;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  margin-bottom:5px;
+}
+select{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:11px;
+  font:inherit;
+  background:#fff;
+}
+.day-image{
+  background:#f0e9df;
+}
+@media(min-width:760px){
+  .train-booking-head{flex-direction:row;justify-content:space-between;align-items:flex-start}
+  .train-booking-grid{grid-template-columns:1fr 1fr}
+  .train-booking-grid label:last-child{grid-column:1/-1}
+}
