@@ -1,7 +1,5 @@
-# Notre voyage en Chine – V9.0
+# Notre Voyage en Chine – V9.2
 
-Version rapide basée sur la V8.
+Version enrichie avec budget, suivi des réservations, transports, carte enrichie et export/import complet des données `cn26_*`.
 
-Nouveautés : jours de la semaine, participants 2/3 voyageurs, hôtels de Chengdu et Emeishan confirmés avec paiement sur place, trajet Chengdu East vers Huanglongjiuzhai, et corrections du week-end familial.
-
-Les clés localStorage `cn26_*` sont conservées afin de préserver les notes et commentaires sur le même navigateur et la même adresse GitHub Pages. Une sauvegarde via **Notes → Exporter** reste recommandée avant la mise à jour.
+Pour conserver les commentaires, publier cette version à la même adresse que la précédente. Utiliser aussi Notes → Exporter avant toute mise à jour.
