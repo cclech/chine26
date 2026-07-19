@@ -26,7 +26,7 @@ DAYS.forEach((d,i)=>{
   const highlights=(d.highlights||[]).map(x=>`<li>${x}</li>`).join('');
   a.innerHTML=`
     <div class="day-body">
-      <div class="date">${d.date}</div>
+      <div class="date">${d.date}</div><div class="participant-badge">👥 ${d.participants||'2 voyageurs'}</div>
       <h3>${d.title}</h3>
       <div class="muted">Nuit : ${d.night}</div>
       <img class="day-image" id="photo-${i}" hidden>
@@ -126,7 +126,17 @@ function exportData(){
 }
 $('#sharedAlbum').value=localStorage.getItem('cn26_album')||'';function saveSharedAlbum(){const u=$('#sharedAlbum').value.trim();localStorage.setItem('cn26_album',u);const a=$('#openAlbum');if(u){a.href=u;a.classList.remove('hidden')}else a.classList.add('hidden')}saveSharedAlbum();
 const galleryDB=[];$('#photoInput').onchange=e=>{[...e.target.files].forEach(f=>{const r=new FileReader();r.onload=()=>{galleryDB.push(r.result);$('#localGallery').innerHTML=galleryDB.map(x=>`<img src="${x}">`).join('')};r.readAsDataURL(f)})};
-function todayCard(){const now=new Date(),p=DAYS.map((d,i)=>{const m=d.date.match(/(\d+)\s+(juillet|août)/);if(!m)return null;return{i,date:new Date(2026,m[2]==='juillet'?6:7,+m[1])}}).filter(Boolean);const f=p.find(x=>x.date.toDateString()===now.toDateString())||p.find(x=>x.date>=now)||p.at(-1),d=DAYS[f.i];$('#today').innerHTML=`<strong>${d.date} — ${d.title}</strong><p>${d.plan.join(' · ')}</p>`}todayCard();
+function todayCard(){
+  const monthMap={'juillet':6,'août':7};
+  const now=new Date();
+  const parsed=DAYS.map((d,i)=>{
+    const m=d.date.match(/(\d+)\s+(juillet|août)\s+2026/);
+    return m?{i,date:new Date(2026,monthMap[m[2]],Number(m[1]))}:null;
+  }).filter(Boolean);
+  const f=parsed.find(x=>x.date.toDateString()===now.toDateString())||parsed.find(x=>x.date>=now)||parsed.at(-1);
+  const d=DAYS[f.i];
+  $('#today').innerHTML=`<strong>${d.date} — ${d.title}</strong><p>${d.participants||''}</p><p>${d.plan.join(' · ')}</p>`;
+}todayCard();
 
 
 const mapObj=L.map('mapBox');window.mapObj=mapObj;

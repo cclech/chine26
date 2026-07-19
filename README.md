@@ -1,17 +1,7 @@
-# Notre Voyage en Chine – Été 2026 — V8
+# Notre voyage en Chine – V9.0
 
-Cette version contient un dossier `images` local.
+Version rapide basée sur la V8.
 
-## Publication GitHub Pages
-Déposez à la racine du dépôt :
-- index.html
-- app.js
-- styles.css
-- manifest.webmanifest
-- service-worker.js
-- README.md
-- le dossier complet `images`
+Nouveautés : jours de la semaine, participants 2/3 voyageurs, hôtels de Chengdu et Emeishan confirmés avec paiement sur place, trajet Chengdu East vers Huanglongjiuzhai, et corrections du week-end familial.
 
-Ne déposez pas uniquement les fichiers HTML : le dossier `images` est indispensable.
-
-Les photos proviennent de Wikimedia Commons. Consultez la page « Crédits photos » du site.
+Les clés localStorage `cn26_*` sont conservées afin de préserver les notes et commentaires sur le même navigateur et la même adresse GitHub Pages. Une sauvegarde via **Notes → Exporter** reste recommandée avant la mise à jour.
