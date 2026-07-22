@@ -1,8 +1,9 @@
 {
-  "name": "Notre Voyage en Chine – Été 2026",
+  "name": "Chine 2026 · Carnet de voyage",
   "short_name": "Chine 2026",
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f5efe6",
-  "theme_color": "#8f2b24"
+  "background_color": "#f6f2eb",
+  "theme_color": "#f6f2eb",
+  "icons": []
 }
