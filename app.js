@@ -1,8 +1,21 @@
 
 const DAYS=window.DAYS,HOTELS=window.HOTELS,RESERVATIONS=window.RESERVATIONS,SEGMENTS=window.SEGMENTS,TRAIN_BOOKINGS=window.TRAIN_BOOKINGS||[];
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-function showView(id){$$('.view').forEach(v=>v.classList.remove('active'));$$('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));$('#'+id).classList.add('active');if(id==='map'&&window.mapObj)setTimeout(()=>mapObj.invalidateSize(),100)}
+let currentView=document.querySelector('.view.active')?.id||'home';
+function scrollKey(id){return 'cn26_scroll_'+id}
+function showView(id){
+  if(currentView) localStorage.setItem(scrollKey(currentView),String(window.scrollY));
+  $$('.view').forEach(v=>v.classList.remove('active'));
+  $$('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+  $('#'+id).classList.add('active');
+  currentView=id;
+  localStorage.setItem('cn26_last_view',id);
+  if(id==='map'&&window.mapObj)setTimeout(()=>mapObj.invalidateSize(),100);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo({top:Number(localStorage.getItem(scrollKey(id))||0),behavior:'auto'})));
+}
 $$('.tabs button').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+window.addEventListener('beforeunload',()=>localStorage.setItem(scrollKey(currentView),String(window.scrollY)));
+window.addEventListener('load',()=>{const last=localStorage.getItem('cn26_last_view');if(last&&document.getElementById(last))showView(last)});
 
 const keyDay=i=>'cn26_day_'+i,keyHotel=i=>'cn26_hotel_'+i,keyTrain=i=>'cn26_train_'+i;
 const LOCAL_PHOTOS={"Rennes_station": "images/rennes.jpg", "Air_China": "images/air-china.jpg", "Chengdu": "images/chengdu.jpg", "Emeishan_City": "images/mont-emei.jpg", "Mount_Emei": "images/mont-emei.jpg", "Leshan_Giant_Buddha": "images/leshan.jpg", "Jiuzhaigou": "images/jiuzhaigou.jpg", "Huanglong_Scenic_and_Historic_Interest_Area": "images/huanglong.jpg", "Dujiangyan": "images/dujiangyan.jpg", "Mount_Qingcheng": "images/qingcheng.jpg", "Chongqing": "images/chongqing.jpg", "Anshun": "images/huangguoshu.jpg", "Huangguoshu_Waterfall": "images/huangguoshu.jpg", "Kaili_City": "images/kaili.jpg", "Jiangkou_County": "images/fanjing.jpg", "Fanjing_Mountain": "images/fanjing.jpg", "Qingyan": "images/qingyan.jpg", "Sichuan_opera": "images/opera-sichuan.jpg", "Chengdu_Tianfu_International_Airport": "images/tianfu-airport.jpg"};
@@ -107,8 +120,12 @@ TRAIN_BOOKINGS.forEach((t,i)=>{
 const seedBudget=[
 {id:'seed-flight',category:'Transport',label:'Vols Air China aller-retour · 2 passagers',amount:1767.84,status:'Payé'},
 {id:'seed-brussels',category:'Hôtel',label:'Bedford Hotel Brussels',amount:98.68,status:'Payé'},
-{id:'seed-chengdu',category:'Hôtel',label:'Holiday Inn Express Chengdu Phoenix Mountain',amount:53,status:'Réservé · à payer'},
-{id:'seed-emei',category:'Hôtel',label:'Mount Emei Teddy Bear Hotel',amount:25.54,status:'Réservé · à payer'}];
+{id:'seed-chengdu',category:'Hôtel',label:'Holiday Inn Express Chengdu Phoenix Mountain',amount:53.48,status:'Réservé · à payer'},
+{id:'seed-emei',category:'Hôtel',label:'Mount Emei Teddy Bear Hotel',amount:25.54,status:'Réservé · à payer'},
+{id:'seed-emei-ticket',category:'Activité',label:'Entrées du Mont Emei · 3 personnes · 2 jours',amount:30.99,status:'Payé'},
+{id:'seed-panda',category:'Hôtel',label:'P.D Panda Hotel · Chengdu',amount:55,status:'Réservé · à payer'},
+{id:'seed-jiuzhai',category:'Hôtel',label:'BI Boutique B&B · Jiuzhaigou',amount:62.15,status:'Réservé · à payer'},
+{id:'seed-songpan',category:'Hôtel',label:"Emma's Guesthouse · Songpan · 2 nuits",amount:63,status:'Réservé · à payer'}];
 let extraBudget=JSON.parse(localStorage.getItem('cn26_budget_items')||'[]');
 function budgetItems(){return [...seedBudget,...extraBudget]}
 function renderBudget(){const rows=$('#budgetRows');if(!rows)return;rows.innerHTML='';budgetItems().forEach(x=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${x.category}</td><td>${x.label}</td><td>${money(x.amount)}</td><td><span class="status-pill">${x.status}</span></td><td>${String(x.id).startsWith('user-')?`<button class="danger small" onclick="removeBudgetItem('${x.id}')">×</button>`:''}</td>`;rows.appendChild(tr)});const items=budgetItems(),total=items.reduce((a,x)=>a+Number(x.amount||0),0),paid=items.filter(x=>/payé/i.test(x.status)).reduce((a,x)=>a+Number(x.amount||0),0),due=items.filter(x=>/à payer|prévu/i.test(x.status)).reduce((a,x)=>a+Number(x.amount||0),0);$('#budgetSummary').innerHTML=`<div class="stat"><span>Total suivi</span><strong>${money(total)}</strong></div><div class="stat"><span>Déjà payé</span><strong>${money(paid)}</strong></div><div class="stat"><span>Reste / prévu</span><strong>${money(due)}</strong></div>`}
@@ -186,6 +203,7 @@ const points=[
 {name:'Mont Emei',lat:29.5229,lon:103.3321,kind:'visit'},
 {name:'Grand Bouddha de Leshan',lat:29.5449,lon:103.7739,kind:'visit'},
 {name:'Jiuzhaigou',lat:33.2600,lon:103.9186,kind:'visit'},
+{name:'Songpan · Emma\'s Guesthouse',lat:32.638,lon:103.598,kind:'hotel'},
 {name:'Huanglong',lat:32.7472,lon:103.8337,kind:'visit'},
 {name:'Dujiangyan',lat:31.0050,lon:103.6194,kind:'hotel'},
 {name:'Mont Qingcheng',lat:30.9000,lon:103.5650,kind:'visit'},
@@ -210,8 +228,9 @@ const segments=[
 {a:[29.6012,103.4845],b:[29.5449,103.7739],t:'🚄 20 à 30 min'},
 {a:[29.5449,103.7739],b:[30.5728,104.0668],t:'🚄 environ 1 h'},
 {a:[30.5728,104.0668],b:[33.2600,103.9186],t:'🚄 + navette 3 h 30 à 4 h 30'},
-{a:[33.2600,103.9186],b:[32.7472,103.8337],t:'🚌 environ 2 h'},
-{a:[33.2600,103.9186],b:[31.0050,103.6194],t:'🚄 + transfert 3 h à 4 h'},
+{a:[33.2600,103.9186],b:[32.638,103.598],t:'🚌 Jiuzhaigou → Songpan'},
+{a:[32.638,103.598],b:[32.7472,103.8337],t:'🚌 Songpan ↔ Huanglong'},
+{a:[32.638,103.598],b:[31.0050,103.6194],t:'🚄 + transfert vers Dujiangyan'},
 {a:[31.0050,103.6194],b:[29.5630,106.5516],t:'🚄 2 h à 2 h 30'},
 {a:[29.5630,106.5516],b:[26.2456,105.9322],t:'🚄 environ 2 h 30'},
 {a:[26.2456,105.9322],b:[25.9926,105.6671],t:'🚌 45 min à 1 h'},
