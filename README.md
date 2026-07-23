@@ -1,16 +1,16 @@
-# Chine 2026 — V11
+# Chine 2026 — V12
 
-Version épurée du carnet de voyage, conçue pour GitHub Pages.
+Version complète prête pour GitHub Pages.
 
-## Navigation
-- Voyage : itinéraire synthétique, une journée à la suite de l’autre
-- Carte : parcours global
-- Budget : suivi et export du bilan en CSV
+## Corrections de la V12
 
-Les notes personnelles et dépenses ajoutées sont conservées dans le navigateur.
+- correction du fichier `index.html` qui contenait une balise JavaScript invalide ;
+- temps de trajet affichés sur la page Voyage ;
+- ville de la nuit affichée avec l'hébergement ;
+- liens de réservation Booking ;
+- cache du service worker renouvelé et chargement prioritaire de la version en ligne ;
+- fichier `.nojekyll` ajouté pour une publication GitHub Pages plus fiable.
 
+## Publication
 
-## Nouveautés V11
-- Temps de trajet affichés sur la page Voyage.
-- Ville de nuit affichée avant chaque hébergement.
-- Lien discret vers les réservations Booking pour les hôtels confirmés.
+Décompressez le ZIP puis déposez tous les fichiers et le dossier `images` à la racine du dépôt GitHub. Ne déposez pas le ZIP lui-même.
