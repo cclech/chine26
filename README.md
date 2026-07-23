@@ -1,4 +1,4 @@
-# Chine 2026 — V12
+# Chine 2026 — V13
 
 Version complète prête pour GitHub Pages.
 
@@ -14,3 +14,9 @@ Version complète prête pour GitHub Pages.
 ## Publication
 
 Décompressez le ZIP puis déposez tous les fichiers et le dossier `images` à la racine du dépôt GitHub. Ne déposez pas le ZIP lui-même.
+
+
+## Correction V13
+
+- Le bouton « Annuler » du formulaire de dépense ferme désormais la fenêtre sans déclencher la validation des champs obligatoires.
+- Les données budgétaires V12 déjà enregistrées dans le navigateur sont conservées.
