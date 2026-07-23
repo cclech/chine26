@@ -1,16 +1,1 @@
-# Chine 2026 — V11
-
-Version épurée du carnet de voyage, conçue pour GitHub Pages.
-
-## Navigation
-- Voyage : itinéraire synthétique, une journée à la suite de l’autre
-- Carte : parcours global
-- Budget : suivi et export du bilan en CSV
-
-Les notes personnelles et dépenses ajoutées sont conservées dans le navigateur.
-
-
-## Nouveautés V11
-- Temps de trajet affichés sur la page Voyage.
-- Ville de nuit affichée avant chaque hébergement.
-- Lien discret vers les réservations Booking pour les hôtels confirmés.
+const CACHE='chine-2026-v11';const FILES=['./','./index.html','./styles.css','./app.js','./manifest.webmanifest'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES))));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
