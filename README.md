@@ -31,3 +31,13 @@ Décompressez le ZIP puis déposez tous les fichiers et le dossier `images` à l
 ## Nouveauté V15
 
 La carte affiche désormais en permanence le nom en alphabet latin de chaque ville-étape, à côté de son marqueur numéroté. Les doublons de lieu ne répètent pas inutilement la même étiquette.
+
+
+## V16
+
+- Deux nuits à Dujiangyan les 6 et 7 août.
+- Ajout du Qingcheng Mountain Huakai Shi Minsu et de son lien Booking.
+- Ajout de l’Atour Light Hotel Chongqing Jiefangbei Jiaochangkou Metro Station et de son lien Booking.
+- Détail quotidien des trains, bus, taxis et correspondances.
+- Boutons « À réserver sur Trip.com » pour les journées comportant un trajet ferroviaire.
+- Budget augmenté de 57 € pour l’hôtel de Dujiangyan. Le prix de l’hôtel de Chongqing n’a pas été ajouté, car il n’a pas encore été communiqué.

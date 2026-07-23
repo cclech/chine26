@@ -1,4 +1,4 @@
-const CACHE='chine-2026-v13';
+const CACHE='chine-2026-v16';
 const CORE=['./styles.css','./app.js','./manifest.webmanifest'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)));
