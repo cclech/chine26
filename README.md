@@ -20,3 +20,14 @@ Décompressez le ZIP puis déposez tous les fichiers et le dossier `images` à l
 
 - Le bouton « Annuler » du formulaire de dépense ferme désormais la fenêtre sans déclencher la validation des champs obligatoires.
 - Les données budgétaires V12 déjà enregistrées dans le navigateur sont conservées.
+
+
+## V15
+- Carte limitée aux étapes situées en Chine (les points Bruxelles/aéroport ne faussent plus le centrage).
+- Liste sous la carte avec numéro d’étape, trajet, mode de transport et durée.
+- Durée ajoutée dans les fenêtres des marqueurs.
+
+
+## Nouveauté V15
+
+La carte affiche désormais en permanence le nom en alphabet latin de chaque ville-étape, à côté de son marqueur numéroté. Les doublons de lieu ne répètent pas inutilement la même étiquette.
