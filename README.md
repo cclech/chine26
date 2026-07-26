@@ -1,4 +1,4 @@
-# Chine 2026 — V18
+# Chine 2026 — V19
 
 Version complète du roadbook prête pour GitHub Pages.
 
@@ -17,3 +17,13 @@ Version complète du roadbook prête pour GitHub Pages.
 ## Publication
 
 Décompressez le ZIP et placez tous les fichiers ainsi que le dossier `images` à la racine du dépôt GitHub Pages.
+
+
+## Modifications V19
+- Ajout de l’alerte du 7 août pour réserver Fanjingshan.
+- Ajout de la nuit du 15 au 16 août à Qingyan et de toutes les informations communiquées.
+- Correction des trajets Fanjingshan → Qingyan, Qingyan → Chengdu et Chengdu → TFU.
+- Ajout du transfert aéroport → hôtel le 30 juillet, avec le métro en premier choix.
+- Présentation uniforme : Trajet du jour, Visites, Nuit.
+- Conservation de toutes les images de la V18, notamment Xijiang.
+- Conservation des clés de stockage V18 afin de ne pas perdre les notes et dépenses déjà saisies dans le navigateur.
