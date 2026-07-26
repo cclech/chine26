@@ -1,5 +1,5 @@
-const CACHE='chine-2026-v17';
-const CORE=['./styles.css','./app.js','./manifest.webmanifest'];
+const CACHE='chine-2026-v21';
+const CORE=['./index.html','./styles.css','./app.js','./manifest.webmanifest','./images/xijiang.jpg'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)));
   self.skipWaiting();

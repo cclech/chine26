@@ -27,3 +27,6 @@ Décompressez le ZIP et placez tous les fichiers ainsi que le dossier `images` �
 - Présentation uniforme : Trajet du jour, Visites, Nuit.
 - Conservation de toutes les images de la V18, notamment Xijiang.
 - Conservation des clés de stockage V18 afin de ne pas perdre les notes et dépenses déjà saisies dans le navigateur.
+
+
+V21: correction du chargement de l’image Xijiang et renouvellement du cache hors ligne.
