@@ -1,4 +1,4 @@
-# Chine 2026 — V17
+# Chine 2026 — V18
 
 Version complète du roadbook prête pour GitHub Pages.
 
