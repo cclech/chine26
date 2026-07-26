@@ -29,4 +29,22 @@ Décompressez le ZIP et placez tous les fichiers ainsi que le dossier `images` �
 - Conservation des clés de stockage V18 afin de ne pas perdre les notes et dépenses déjà saisies dans le navigateur.
 
 
-V21: correction du chargement de l’image Xijiang et renouvellement du cache hors ligne.
+V22: correction du chargement de l’image Xijiang et renouvellement du cache hors ligne.
+
+
+## V22
+- Ajout et détail du trajet Kaili → Xijiang Qianhu Miao Village le 12 août.
+- Navette touristique depuis Kaili Sud indiquée en priorité, avec Didi en alternative.
+
+
+## V24
+
+- Noms chinois et encarts « À montrer au chauffeur » harmonisés pour tous les hôtels confirmés.
+- Trajet Xijiang → Fanjingshan détaillé étape par étape.
+- Cache hors ligne renouvelé et images conservées, notamment Xijiang.
+
+
+## V24
+- Ajout du spectacle traditionnel du Sichuan le jeudi 30 juillet à 20 h.
+- Ajout de la photo de l’opéra du Sichuan sur la journée du 30 juillet.
+- Ajout du montant de 57,66 € au budget (Trip.com, payé).
