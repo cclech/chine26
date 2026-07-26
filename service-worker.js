@@ -37,14 +37,23 @@ V22: correction du chargement de l’image Xijiang et renouvellement du cache ho
 - Navette touristique depuis Kaili Sud indiquée en priorité, avec Didi en alternative.
 
 
-## V25
+## V26
 
 - Noms chinois et encarts « À montrer au chauffeur » harmonisés pour tous les hôtels confirmés.
 - Trajet Xijiang → Fanjingshan détaillé étape par étape.
 - Cache hors ligne renouvelé et images conservées, notamment Xijiang.
 
 
-## V25
+## V26
 - Ajout du spectacle traditionnel du Sichuan le jeudi 30 juillet à 20 h.
 - Ajout de la photo de l’opéra du Sichuan sur la journée du 30 juillet.
 - Ajout du montant de 57,66 € au budget (Trip.com, payé).
+
+
+## V26
+- Base conservée depuis la V24 fonctionnelle.
+- Carte : marqueurs bordeaux agrandis avec numéros blancs.
+- Tableau récapitulatif complet sous la carte.
+- Affichage de l’image Xijiang retiré (fichier défectueux).
+- Cache PWA renouvelé et dépendance cassée supprimée.
+- Blocs obsolètes « Transports et visites » et « Pratique » retirés.
