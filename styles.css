@@ -20,3 +20,12 @@
 .visits-card,.night{margin-top:1rem}.visits-card h3,.night h3{margin:0 0 .6rem;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:#8b332c}
 .night>p{margin:.1rem 0 .55rem}.night .hotel-address{display:block;margin:.28rem 0;line-height:1.45}.night a{color:inherit}
 .todo-item.priority{border:2px solid #a33b32;background:#fff1ed}
+
+/* V25 — lisibilité de la carte et résumé des étapes */
+.map-marker{width:36px;height:36px;background:#6f1d1b;color:#fff;border:3px solid #fff;font:800 15px/1 Arial,sans-serif;box-shadow:0 2px 8px #0008;text-shadow:0 1px 1px #0008}
+.map-list{display:block;margin-top:35px;overflow-x:auto}
+.map-summary{min-width:820px;border-top:1px solid var(--line)}
+.map-summary-row{display:grid;grid-template-columns:56px 1.45fr 1.25fr .85fr 1fr;gap:14px;align-items:center;padding:13px 8px;border-bottom:1px solid var(--line);font:14px/1.35 Arial,sans-serif}
+.map-summary-head{position:sticky;top:0;background:var(--paper);color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.map-stop-number{display:inline-grid!important;place-items:center;width:2.15rem;height:2.15rem;border-radius:50%;background:#6f1d1b;color:#fff;border:2px solid #fff;box-shadow:0 1px 5px #0006;font-weight:800;font-size:.95rem;text-shadow:0 1px 1px #0008}
+@media(max-width:700px){.map-list{overflow:visible}.map-summary{min-width:0;border-top:0}.map-summary-head{display:none}.map-summary-row{display:block;margin:0 0 14px;padding:15px;border:1px solid var(--line);background:rgba(255,255,255,.28)}.map-summary-row>span{display:grid;grid-template-columns:125px 1fr;gap:10px;padding:5px 0}.map-summary-row>span::before{content:attr(data-label);color:var(--muted);font-size:12px;font-weight:700}.map-summary-row>span:first-child{display:block;padding-bottom:8px}.map-summary-row>span:first-child::before{display:none}}
